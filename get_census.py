@@ -8,7 +8,7 @@ import pandas as pd
 import requests
 import time
 
-pause_time = 10
+
 
 
 def download_state_tracts_vars(api_key, dataset, variables, state, year, clean, print_mode):
@@ -43,8 +43,8 @@ def download_state_tracts_vars(api_key, dataset, variables, state, year, clean, 
         return df
 
     except Exception as e:
-        print('\n', e, response.status_code, response.text, response.url, f'PAUSING {pause_time} SECS THEN RE-TRYING')
-        time.sleep(pause_time)
+        print(e, response.status_code, response.text, response.url, 'PAUSING THEN RE-TRYING')
+        time.sleep(10)
         return download_state_tracts_vars(api_key, dataset, variables, state, year, clean, print_mode)
     
     
@@ -119,3 +119,13 @@ def clean_census_data(df):
     assert df.index.is_unique
     
     return df
+
+
+
+
+def chunks(l, n):
+    """
+    yield successive n-sized chunks from list l
+    """
+    for i in range(0, len(l), n):
+        yield l[i:i+n]
